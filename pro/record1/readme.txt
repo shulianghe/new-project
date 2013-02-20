@@ -1,3 +1,4 @@
+It just a audio programme
 1. how to make?
 gcc sndtools.c record.c -o test
 
