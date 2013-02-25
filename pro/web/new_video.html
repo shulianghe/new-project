@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<title>视频监控</title> 
+
+
+<style type="text/css">
+body,html {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	font-family: Arial;
+}
+
+.layout_top {
+	float: left;
+	height: 10%;
+	width: 100%;
+	background: #888;
+}
+.layout_left {
+	float: left;
+	height: 80%;
+	width: 20%;
+	background: #888;
+}
+
+.layout_right {
+	float: left;
+	height: 80%;
+	width: 80%;
+	background: #888;
+}
+.layout_bottom {
+	float: left;
+	height: 10%;
+	width: 100%;
+	background: #888;
+}
+</style>
+
+<script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+<!--
+	$(function() {		
+		
+		$("#Applet1").click(function(){
+			alert("外部div宽：" +$("#top").width()+" 	高："+ $("#top").height()+"\n"+"内部div宽：" +$("#Applet1").width()+" 	高："+ $("#Applet1").height());
+		});
+		$("#Applet2").click(function(){
+			alert("外部div宽：" +$("#left_bottom").width()+" 	高："+ $("#left_bottom").height()+"\n"+"内部div宽：" +$("#Applet3").width()+" 	高："+ $("#Applet3").height());
+		});
+		$("#Applet3").click(function(){
+			alert("外部div宽：" +$("#right_bottom").width()+" 	高："+ $("#right_bottom").height()+"\n"+"内部div宽：" +$("#Applet4").width()+" 	高："+ $("#Applet4").height());
+		});				
+	});
+//-->
+<!-- 屏蔽右键
+   // document.oncontextmenu=function(e){return false;}  
+//-->
+
+var ip;
+//var provs = readFile('c:/deviceInfo.txt');
+function getVLC(name){
+        if (window.document[name])   
+        {
+                return window.document[name];
+        }
+        if (navigator.appName.indexOf("Microsoft Internet")==-1)
+        {
+                if (document.embeds && document.embeds[name])
+                        return document.embeds[name];   
+        }
+        else
+        {
+                return document.getElementById(name);
+        }
+}
+
+// 停止播放
+function stopPlay(){
+	vlc.playlist.stop();
+ 
+	// 修改播放/停止按钮状态
+	document.getElementById("play_button").disabled=false;
+    document.getElementById("stop_button").disabled=true;
+}
+
+
+// 重新播放
+function repeatPlay(){
+	vlc.playlist.play();
+	//setTimeout(checkVedioStatus,500);
+	// 修改播放/停止按钮状态
+	document.getElementById("play_button").disabled=true;
+    document.getElementById("stop_button").disabled=false;
+}
+
+// 静音
+function noSound(){
+//	if(vlcSound>0){
+		vlcSound=0;
+//	}
+	vlc.audio.toggleMute();
+	vlcSound=vlc.audio.volume;
+	document.getElementById("vlc_sound").value=vlcSound;
+	if(vlcSound==0){
+		// document.getElementById("no_sound").value="&nbsp;恢复音量&nbsp;";
+		document.getElementById("no_sound").value=" "+"恢复音量"+" ";
+	}else{
+		// document.getElementById("no_sound").value="&nbsp;静&nbsp;&nbsp;&nbsp;&nbsp;音&nbsp;";
+		document.getElementById("no_sound").value=" "+"静"+"  "+"音"+" ";
+	}
+
+}
+
+// 音量加减
+function soundChange(nums){
+	if(nums<0 && vlcSound==0){
+	alert("音量最小，不能再减少音量....");
+	return;
+	}
+	vlcSound+=nums;
+	if(vlcSound<=0){
+		vlcSound=0;
+		document.getElementById("no_sound").value=" "+"恢复音量"+" ";
+	}else{
+	// 当音量>0的时候，都要把静音的标识打开
+	document.getElementById("no_sound").value=" "+"静"+"  "+"音"+" ";
+	}
+	if(vlcSound>200){
+		alert("音量最大，不能再增大音量....");
+		vlcSound=200;
+	}
+	vlc.audio.volume =vlcSound;
+	document.getElementById("vlc_sound").value=vlcSound;
+}
+
+//全屏
+function screenFull(){
+	vlc.video.toggleFullscreen();
+}
+
+function doGo(mrl){
+        var vlc = getVLC("vlc");
+        itemId=vlc.playlist.add("rtsp://"+mrl);
+        vlc.playlist.playItem(itemId);
+		ip = mrl;
+        
+		document.getElementById("play_button").disabled=true;
+		document.getElementById("stop_button").disabled=false;
+}
+
+function doGo1(mrl){
+        var vlc = getVLC("vlc");
+        itemId=vlc.playlist.add("rtsp://"+mrl+":8554/proxyStream");
+        vlc.playlist.playItem(itemId);
+		ip = mrl;
+        
+		document.getElementById("play_button").disabled=true;
+		document.getElementById("stop_button").disabled=false;
+}
+
+        function iniEvent() {
+            var provUL = document.getElementById("prov");
+            if (provUL) {
+                var allli = provUL.getElementsByTagName("li");
+                for (i = 0; i < allli.length; i++) {
+                    node = allli[i];
+                    node.onmouseover = function () {        //鼠标经过时显示层
+                        this.className = "current";
+                    }
+                    node.onmouseout = function () {         //鼠标离开时隐藏层
+                        this.className = this.className.replace("current", "");
+                    }
+                }
+            }
+        }
+        function loadData() { 
+			var provs = readFile('c:/deviceInfo.txt');
+            var provUL = document.getElementById("prov");
+            var nIndex = 0;
+            for (var key in provs) {
+                var provLi = document.createElement("li");
+                provLi.id = "provLI" + nIndex;
+                //provLi.innerHTML = "<a href='#'>" + key + "</a>";
+                provUL.appendChild(provLi);        //添加省份li
+                //================添加城市========================
+                var citys = provs[key];
+                if (citys.length > 0) {
+                    var cityUL = document.createElement("ul");
+                    var maxLength = 0;  //存放最大城市内容的长度，以便后面设置cityUL的最大宽度，达到宽度自适应
+                    for (var i = 0; i < 1; i++) {
+                        var cityName = citys[i];
+                        if (cityName.length > maxLength) {
+                            maxLength = cityName.length;  //提取最大长度的城市
+                        }
+                        var cityLI = document.createElement("li");
+						var url="http://www.baidu.com";
+                        cityLI.id = "cityLI" + i;
+						//cityLI.title = citys.split(/\:/g)[1];//在此处设置title doGO的mrl参数传递不了
+                        //cityLI.innerHTML = ("<a href='#' onclick=\"return confirm('确定要删除吗？')\" >" + citys + "</a>");
+						cityLI.innerHTML = "<a  title='"+citys.split(/\:/g)[1]+"' href='#' onclick=\"doGo(this.title);return false;\" >" + citys + "</a>";
+                        cityUL.appendChild(cityLI);
+                    }
+                    if (maxLength <= 6) {
+                        maxLength = 100;
+                    }
+                    else {
+                        maxLength = maxLength * 20;   //这里乘以20主要是按一个字20px来算
+                    }
+                    maxLength = maxLength + "px";    //加上像素的px后缀
+                    cityUL.style.width= maxLength;     //设置cityUL的最大宽度
+                    provLi.appendChild(cityUL);          //添加城市UL
+                }
+                nIndex++;
+            }
+            iniEvent();   //初始化事件
+			//alert("DATA LOADED");
+        }
+
+function readFile(filename){   
+
+	var fso = new ActiveXObject("Scripting.FileSystemObject");   
+	var f = fso.OpenTextFile(filename,1);   
+	var s = "";
+	var t="";
+	while (!f.AtEndOfStream)
+	{
+		s += f.ReadLine()+"\n"; 
+	}
+	f.Close();  
+
+/*
+	var Arr=new Array();
+	try
+	{
+		var fso=new ActiveXObject("scripting.filesystemobject");
+		var txtstream=fso.openTextFile(filename,1);
+		var txt='';
+		while(!txtstream.atEndOfLine)
+		{
+			Arr.push(txtstream.readLine());
+		}
+		txtstream.close();
+		txtstream=null;
+		fso=null;
+	}
+	catch(e){alert(e);}
+	for(var i=0;i<Arr.length;i++)
+	{
+		alert(Arr[i]);
+	}
+	*/
+
+	var strs = s.split(/\s/g);//这里是name和ip分开来取,以空格分开
+//	for(var i = 0; i < strs.length; i++) {
+//		alert(strs[i]);
+//	}
+	//alert("this is :" +s.split(/\s/g)[0]);
+	
+	return strs;   
+}   
+  
+//写文件   
+function writeFile(filename,filecontent){   
+    var fso, f, s ;   
+    fso = new ActiveXObject("Scripting.FileSystemObject");      
+    f = fso.OpenTextFile(filename,8,true); 
+    f.WriteLine(filecontent); 
+    f.Close();   
+	alert('添加设备成功，请刷新监控页面获取最新设备列表'); 
+} 
+</script>
+ 
+</head> 
+
+
+<body onload ="loadData()">   
+<div style="border: 2px red solid; margin: 0px; padding: 0px; height: 99%; width: 99%;"> 
+		 <div id="top" class="layout_top">  
+            <div id="Applet1"                 
+				<p><h1 align="center">视频监控DEMO</h1>
+				</div>  
+        </div>  
+        <div id="left_bottom" class="layout_left">  
+            <div id="Applet2"  
+            <li><a href="">首页</a></li><br>
+			<br>
+			<div style="width: 100px; border: 0px solid #CCC; border-bottom:none;">设备列表:<br>
+				<ul id="prov" style="list-style: none; margin: 0px; padding: 0px; ">
+				</ul>
+			</div> 
+			<br>
+			<li><a href="./addDev.html" target=_blank>添加设备</a></li><br>
+			<li><a href="http://www.homewell.com.cn">关于我们</a></li><br>
+			<li><a href="#">联系我们</a></li>    
+			</div>  
+        </div> 
+        <div id="right_bottom" class="layout_right">  
+            <div   id="Applet3"	
+				
+                style="border: 1px yellow solid; margin: 2px; padding: 2px; height: 97%;">监控页面
+<!--[if IE]>
+				<object type='application/x-vlc-plugin' id='vlc' events='True'
+						classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' 
+						codebase="./axvlc.cab" width="100%" height="90%">
+						<param name="mrl" value="rtsp://192.168.1.64" />
+						<param name="showdisplay" value="true" />
+						<param name="toolbar" value="ture" />
+						<param name="autoloop" value="false" />
+						<param name="autoplay" value="false" />
+						<param name="volume" value="50" />
+						<param name="starttime" value="0" />
+				</object>
+<![endif]-->
+<!--[if !IE]><!-->
+				<object type='application/x-vlc-plugin' id='vlc' events='True' width="100%" height="90%">
+						<param name='mrl' value='rtsp://192.168.1.64' />
+						<param name='volume' value='50' />
+						<param name='autoplay' value='false' />
+						<param name="toolbar" value="ture" />
+						<param name='loop' value='false' />
+						<param name='fullscreen' value='true' />
+
+				</object>
+<!--<![endif]-->
+				<form action="./systerm.cgi" method="post" enctype="multipart/form-data" target="_blank">
+					<input type="button" value="&nbsp;播&nbsp;&nbsp;放&nbsp;"  onclick="repeatPlay();" id="play_button">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;停&nbsp;&nbsp;止&nbsp;"  onclick="stopPlay();" id="stop_button">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;静&nbsp;&nbsp;音&nbsp;"  onclick="noSound();" id="no_sound">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;减少音量&nbsp;"  onclick="soundChange(-10);">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;增大音量&nbsp;"  onclick="soundChange(10);">&nbsp;&nbsp;&nbsp;&nbsp;					
+					<input type="submit" value="&nbsp;抓&nbsp;&nbsp;拍&nbsp;" name="capture">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="&nbsp;录&nbsp;&nbsp;像&nbsp;" name="record">&nbsp;&nbsp;
+					<input type="submit" value="&nbsp;重&nbsp;&nbsp;启&nbsp;" name="reboot">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="&nbsp;启动报警&nbsp;" name="Alarm">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;全&nbsp;&nbsp;屏&nbsp;"  onclick="screenFull()">&nbsp;&nbsp;&nbsp;&nbsp;
+					<font color="red" size="2">音量：</font><input type="text" id="vlc_sound" style="width: 40px;color: blue">
+				</form>
+			</div>  
+		</div> 
+		<div id="left_bottom" class="layout_bottom">
+		<tr>
+			<br>
+			<td align="center"><center>版权所有，违者必究</center></td>
+			<hr size="6" width="30%" align="center"  noshade  color=red >
+		</tr>
+		</div>
+    </div>  
+</body>   
+</html>  

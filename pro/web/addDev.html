@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>动态创建纵向列表</title>
+    <style type="text/css">
+<!--
+body{background-color:#ADD8E6;
+			width:200px
+			height:40px
+			margin-top: 3px;
+			margin-right: 0px;
+			margin-bottom: 0px;
+			margin-left: 0px;
+			font-size:18px;
+			text-align:center;
+			position:relative;
+			}
+-->    
+</style>
+<script language="javascript" type="text/javascript">     
+
+//判断输入是否合法
+function testIP(ip){
+  var arr=ip.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if(arr==null)return false;
+  for(i=1;i<arr.length;i++)if(String(Number(arr[i]))!=arr[i]||Number(arr[i])>255)return false;
+  return true;
+}
+/*
+//读文件   
+function readFile(filename){   
+
+	var fso = new ActiveXObject("Scripting.FileSystemObject");   
+	var f = fso.OpenTextFile(filename,1);   
+	var s = "";
+	var t="";
+	while (!f.AtEndOfStream)
+	{
+		s += f.ReadLine()+"\n"; 
+	}
+	f.Close();  
+
+	var strs = s.split(/\s/g);//这里是name和ip分开来取,以空格分开
+	for(var i = 0; i < strs.length; i++) {
+		alert(strs[i]);
+	}
+	//alert("this is :" +s.split(/\s/g)[0]);
+
+
+	return strs;   
+}   
+*/  
+//写文件   
+function writeFile(filename,filecontent){
+	if(testIP(document.getElementById('ip').value) === false){
+		alert("非法IP，请检查您的输入！！！");
+		return false;
+	}
+	if (!confirm("确定要添加吗？")) return false;
+    var fso, f, s ;          
+    fso = new ActiveXObject("Scripting.FileSystemObject");
+	
+	//防止重复添加
+	var fr = fso.OpenTextFile(filename,1);   
+	var sp = "";
+	var tp="";
+	while (!fr.AtEndOfStream)
+	{
+		sp += fr.ReadLine()+"\n"; 
+	}
+	var strs = sp.split(/\s/g);//这里是name和ip分开来取,以空格分开
+	for(var i = 0; i < strs.length; i++) {
+		//alert(strs[i]);
+		if(strs[i].split(/\:/g)[1] === document.getElementById('ip').value)
+		{
+			alert('IP '+strs[i].split(/\:/g)[1]+'已在列表中，无法添加！请确认您的IP是否正确！');
+			fr.Close();
+			return false;
+		}
+	}
+	fr.Close();
+	
+    f = fso.OpenTextFile(filename,8,true); 
+    f.WriteLine(filecontent); 
+    f.Close();   
+	alert('添加设备成功，请刷新监控页面获取设备最新列表'); 
+}  
+
+    </script>
+</head>
+<body >
+ 
+  
+<p align="left">设备别名:
+<input type="text" id="name" name="name" />
+<p align="left">设备IP:
+<input type="text" id="ip" name="ip" /><br>
+
+<input type="button" value="添加设备" onclick="writeFile('c:/deviceInfo.txt',document.getElementById('name').value+':'+document.getElementById('ip').value);"/><br><br>   
+<!--
+<input type="button" value="Write!" onclick="writeFile('c:/deviceInfo.txt','&quot'+document.getElementById('name').value+'&quot'+':'+'&quot'+document.getElementById('ip').value+'&quot');"/><br><br>
+
+<input type="button" value="Read!" onclick="document.getElementById('show').value=readFile('c:/deviceInfo.txt');"/><br>   
+<textarea id="show" name="show" cols="100" rows="20" >   
+</textarea>   
+-->
+</body>
+</html>  
