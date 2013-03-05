@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <head> 
-<title>ï¿½ï¿½Æµï¿½ï¿½ï¿½</title> 
+<title>ÊÓÆµ¼à¿Ø</title> 
 
 
 <style type="text/css">
@@ -46,17 +46,17 @@ body,html {
 	$(function() {		
 		
 		$("#Applet1").click(function(){
-			alert("ï¿½â²¿divï¿½ï¿½" +$("#top").width()+" 	ï¿½ß£ï¿½"+ $("#top").height()+"\n"+"ï¿½Ú²ï¿½divï¿½ï¿½" +$("#Applet1").width()+" 	ï¿½ß£ï¿½"+ $("#Applet1").height());
+			alert("Íâ²¿div¿í£º" +$("#top").width()+" 	¸ß£º"+ $("#top").height()+"\n"+"ÄÚ²¿div¿í£º" +$("#Applet1").width()+" 	¸ß£º"+ $("#Applet1").height());
 		});
 		$("#Applet2").click(function(){
-			alert("ï¿½â²¿divï¿½ï¿½" +$("#left_bottom").width()+" 	ï¿½ß£ï¿½"+ $("#left_bottom").height()+"\n"+"ï¿½Ú²ï¿½divï¿½ï¿½" +$("#Applet3").width()+" 	ï¿½ß£ï¿½"+ $("#Applet3").height());
+			alert("Íâ²¿div¿í£º" +$("#left_bottom").width()+" 	¸ß£º"+ $("#left_bottom").height()+"\n"+"ÄÚ²¿div¿í£º" +$("#Applet3").width()+" 	¸ß£º"+ $("#Applet3").height());
 		});
 		$("#Applet3").click(function(){
-			alert("ï¿½â²¿divï¿½ï¿½" +$("#right_bottom").width()+" 	ï¿½ß£ï¿½"+ $("#right_bottom").height()+"\n"+"ï¿½Ú²ï¿½divï¿½ï¿½" +$("#Applet4").width()+" 	ï¿½ß£ï¿½"+ $("#Applet4").height());
+			alert("Íâ²¿div¿í£º" +$("#right_bottom").width()+" 	¸ß£º"+ $("#right_bottom").height()+"\n"+"ÄÚ²¿div¿í£º" +$("#Applet4").width()+" 	¸ß£º"+ $("#Applet4").height());
 		});				
 	});
 //-->
-<!-- ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½
+<!-- ÆÁ±ÎÓÒ¼ü
    // document.oncontextmenu=function(e){return false;}  
 //-->
 
@@ -78,26 +78,26 @@ function getVLC(name){
         }
 }
 
-// Í£Ö¹ï¿½ï¿½ï¿½ï¿½
+// Í£Ö¹²¥·Å
 function stopPlay(){
 	vlc.playlist.stop();
  
-	// ï¿½Þ¸Ä²ï¿½ï¿½ï¿½/Í£Ö¹ï¿½ï¿½Å¥×´Ì¬
+	// ÐÞ¸Ä²¥·Å/Í£Ö¹°´Å¥×´Ì¬
 	document.getElementById("play_button").disabled=false;
     document.getElementById("stop_button").disabled=true;
 }
 
 
-// ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
+// ÖØÐÂ²¥·Å
 function repeatPlay(){
 	vlc.playlist.play();
 	//setTimeout(checkVedioStatus,500);
-	// ï¿½Þ¸Ä²ï¿½ï¿½ï¿½/Í£Ö¹ï¿½ï¿½Å¥×´Ì¬
+	// ÐÞ¸Ä²¥·Å/Í£Ö¹°´Å¥×´Ì¬
 	document.getElementById("play_button").disabled=true;
     document.getElementById("stop_button").disabled=false;
 }
 
-// ï¿½ï¿½ï¿½ï¿½
+// ¾²Òô
 function noSound(){
 //	if(vlcSound>0){
 		vlcSound=0;
@@ -106,38 +106,38 @@ function noSound(){
 	vlcSound=vlc.audio.volume;
 	document.getElementById("vlc_sound").value=vlcSound;
 	if(vlcSound==0){
-		// document.getElementById("no_sound").value="&nbsp;ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½&nbsp;";
-		document.getElementById("no_sound").value=" "+"ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½"+" ";
+		// document.getElementById("no_sound").value="&nbsp;»Ö¸´ÒôÁ¿&nbsp;";
+		document.getElementById("no_sound").value=" "+"»Ö¸´ÒôÁ¿"+" ";
 	}else{
-		// document.getElementById("no_sound").value="&nbsp;ï¿½ï¿½&nbsp;&nbsp;&nbsp;&nbsp;ï¿½ï¿½&nbsp;";
-		document.getElementById("no_sound").value=" "+"ï¿½ï¿½"+"  "+"ï¿½ï¿½"+" ";
+		// document.getElementById("no_sound").value="&nbsp;¾²&nbsp;&nbsp;&nbsp;&nbsp;Òô&nbsp;";
+		document.getElementById("no_sound").value=" "+"¾²"+"  "+"Òô"+" ";
 	}
 
 }
 
-// ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½
+// ÒôÁ¿¼Ó¼õ
 function soundChange(nums){
 	if(nums<0 && vlcSound==0){
-	alert("ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½....");
+	alert("ÒôÁ¿×îÐ¡£¬²»ÄÜÔÙ¼õÉÙÒôÁ¿....");
 	return;
 	}
 	vlcSound+=nums;
 	if(vlcSound<=0){
 		vlcSound=0;
-		document.getElementById("no_sound").value=" "+"ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½"+" ";
+		document.getElementById("no_sound").value=" "+"»Ö¸´ÒôÁ¿"+" ";
 	}else{
-	// ï¿½ï¿½ï¿½ï¿½ï¿½>0ï¿½ï¿½Ê±ï¿½ò£¬¶ï¿½Òªï¿½Ñ¾ï¿½ï¿½ï¿½Ä±ï¿½Ê¶ï¿½ï¿½
-	document.getElementById("no_sound").value=" "+"ï¿½ï¿½"+"  "+"ï¿½ï¿½"+" ";
+	// µ±ÒôÁ¿>0µÄÊ±ºò£¬¶¼Òª°Ñ¾²ÒôµÄ±êÊ¶´ò¿ª
+	document.getElementById("no_sound").value=" "+"¾²"+"  "+"Òô"+" ";
 	}
 	if(vlcSound>200){
-		alert("ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½....");
+		alert("ÒôÁ¿×î´ó£¬²»ÄÜÔÙÔö´óÒôÁ¿....");
 		vlcSound=200;
 	}
 	vlc.audio.volume =vlcSound;
 	document.getElementById("vlc_sound").value=vlcSound;
 }
 
-//È«ï¿½ï¿½
+//È«ÆÁ
 function screenFull(){
 	vlc.video.toggleFullscreen();
 }
@@ -168,10 +168,10 @@ function doGo1(mrl){
                 var allli = provUL.getElementsByTagName("li");
                 for (i = 0; i < allli.length; i++) {
                     node = allli[i];
-                    node.onmouseover = function () {        //ï¿½ï¿½ê¾­ï¿½ï¿½Ê±ï¿½ï¿½Ê¾ï¿½ï¿½
+                    node.onmouseover = function () {        //Êó±ê¾­¹ýÊ±ÏÔÊ¾²ã
                         this.className = "current";
                     }
-                    node.onmouseout = function () {         //ï¿½ï¿½ï¿½ï¿½ë¿ªÊ±ï¿½ï¿½ï¿½Ø²ï¿½
+                    node.onmouseout = function () {         //Êó±êÀë¿ªÊ±Òþ²Ø²ã
                         this.className = this.className.replace("current", "");
                     }
                 }
@@ -186,21 +186,21 @@ function doGo1(mrl){
                 provLi.id = "provLI" + nIndex;
                 //provLi.innerHTML = "<a href='#'>" + key + "</a>";
                 provUL.appendChild(provLi);        
-                
+                //================Ìí¼ÓÉè±¸========================
                 var citys = provs[key];
                 if (citys.length > 0) {
                     var cityUL = document.createElement("ul");
-                    var maxLength = 0;  
+                    var maxLength = 0;  //´æ·Å×î´óÉè±¸ÄÚÈÝµÄ³¤¶È£¬ÒÔ±ãºóÃæÉèÖÃULµÄ×î´ó¿í¶È£¬´ïµ½¿í¶È×ÔÊÊÓ¦
                     for (var i = 0; i < 1; i++) {
                         var cityName = citys[i];
                         if (cityName.length > maxLength) {
-                            maxLength = cityName.length;  
+                            maxLength = cityName.length;  //ÌáÈ¡×î´ó³¤¶ÈµÄÉè±¸
                         }
                         var cityLI = document.createElement("li");
 						var url="http://www.baidu.com";
                         cityLI.id = "cityLI" + i;
-						//cityLI.title = citys.split(/\:/g)[1];
-                        //cityLI.innerHTML = ("<a href='#' onclick=\"return confirm('È·ï¿½ï¿½ÒªÉ¾ï¿½ï¿½ï¿½ï¿½')\" >" + citys + "</a>");
+						//cityLI.title = citys.split(/\:/g)[1];//ÔÚ´Ë´¦ÉèÖÃtitle doGOµÄmrl²ÎÊý´«µÝ²»ÁË
+                        //cityLI.innerHTML = ("<a href='#' onclick=\"return confirm('È·¶¨ÒªÉ¾³ýÂð£¿')\" >" + citys + "</a>");
 						cityLI.innerHTML = "<a  title='"+citys.split(/\:/g)[1]+"' href='#' onclick=\"doGo(this.title);return false;\" >" + citys + "</a>";
                         cityUL.appendChild(cityLI);
                     }
@@ -208,15 +208,15 @@ function doGo1(mrl){
                         maxLength = 100;
                     }
                     else {
-                        maxLength = maxLength * 20;   
+                        maxLength = maxLength * 20;   //ÕâÀï³ËÒÔ20Ö÷ÒªÊÇ°´Ò»¸ö×Ö20pxÀ´Ëã
                     }
-                    maxLength = maxLength + "px";   
-                    cityUL.style.width= maxLength;    
-                    provLi.appendChild(cityUL);         
+                    maxLength = maxLength + "px";    //¼ÓÉÏÏñËØµÄpxºó×º
+                    cityUL.style.width= maxLength;     //ÉèÖÃULµÄ×î´ó¿í¶È
+                    provLi.appendChild(cityUL);          //Ìí¼ÓÉè±¸UL
                 }
                 nIndex++;
             }
-            iniEvent();  
+            iniEvent();   //³õÊ¼»¯ÊÂ¼þ
 			//alert("DATA LOADED");
         }
 
@@ -254,7 +254,7 @@ function readFile(filename){
 	}
 	*/
 
-	var strs = s.split(/\s/g);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½nameï¿½ï¿½ipï¿½Ö¿ï¿½ï¿½È¡,ï¿½Ô¿Õ¸ï¿½Ö¿ï¿½
+	var strs = s.split(/\s/g);//ÕâÀïÊÇnameºÍip·Ö¿ªÀ´È¡,ÒÔ¿Õ¸ñ·Ö¿ª
 //	for(var i = 0; i < strs.length; i++) {
 //		alert(strs[i]);
 //	}
@@ -263,14 +263,14 @@ function readFile(filename){
 	return strs;   
 }   
   
-//Ð´ï¿½Ä¼ï¿½   
+//Ð´ÎÄ¼þ   
 function writeFile(filename,filecontent){   
     var fso, f, s ;   
     fso = new ActiveXObject("Scripting.FileSystemObject");      
     f = fso.OpenTextFile(filename,8,true); 
     f.WriteLine(filecontent); 
     f.Close();   
-	alert('ï¿½ï¿½ï¿½ï¿½è±¸ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½Â¼ï¿½ï¿½Ò³ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½Ð±ï¿½'); 
+	alert('Ìí¼ÓÉè±¸³É¹¦£¬ÇëË¢ÐÂ¼à¿ØÒ³Ãæ»ñÈ¡×îÐÂÉè±¸ÁÐ±í'); 
 } 
 </script>
  
@@ -281,27 +281,27 @@ function writeFile(filename,filecontent){
 <div style="border: 2px red solid; margin: 0px; padding: 0px; height: 99%; width: 99%;"> 
 		 <div id="top" class="layout_top">  
             <div id="Applet1"                 
-				<p><h1 align="center">ï¿½ï¿½Æµï¿½ï¿½ï¿½DEMO</h1>
+				<p><h1 align="center">ÊÓÆµ¼à¿ØDEMO</h1>
 				</div>  
         </div>  
         <div id="left_bottom" class="layout_left">  
             <div id="Applet2"  
-            <li><a href="">ï¿½ï¿½Ò³</a></li><br>
+            <li><a href="">Ê×Ò³</a></li><br>
 			<br>
-			<div style="width: 100px; border: 0px solid #CCC; border-bottom:none;">ï¿½è±¸ï¿½Ð±ï¿½:<br>
+			<div style="width: 100px; border: 0px solid #CCC; border-bottom:none;">Éè±¸ÁÐ±í:<br>
 				<ul id="prov" style="list-style: none; margin: 0px; padding: 0px; ">
 				</ul>
 			</div> 
 			<br>
-			<li><a href="./addDev.html" target=_blank>ï¿½ï¿½ï¿½ï¿½è±¸</a></li><br>
-			<li><a href="http://www.homewell.com.cn">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a></li><br>
-			<li><a href="#">ï¿½Ïµï¿½ï¿½ï¿½ï¿½</a></li>    
+			<li><a href="./addDev.html" target=_blank>Ìí¼ÓÉè±¸</a></li><br>
+			<li><a href="http://www.homewell.com.cn">¹ØÓÚÎÒÃÇ</a></li><br>
+			<li><a href="#">ÁªÏµÎÒÃÇ</a></li>    
 			</div>  
         </div> 
         <div id="right_bottom" class="layout_right">  
             <div   id="Applet3"	
 				
-                style="border: 1px yellow solid; margin: 2px; padding: 2px; height: 97%;">ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                style="border: 1px yellow solid; margin: 2px; padding: 2px; height: 97%;">¼à¿ØÒ³Ãæ
 <!--[if IE]>
 				<object type='application/x-vlc-plugin' id='vlc' events='True'
 						classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' 
@@ -327,24 +327,24 @@ function writeFile(filename,filecontent){
 				</object>
 <!--<![endif]-->
 				<form action="./systerm.cgi" method="post" enctype="multipart/form-data" target="_blank">
-					<input type="button" value="&nbsp;ï¿½ï¿½&nbsp;&nbsp;ï¿½ï¿½&nbsp;"  onclick="repeatPlay();" id="play_button">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;²¥&nbsp;&nbsp;·Å&nbsp;"  onclick="repeatPlay();" id="play_button">&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="button" value="&nbsp;Í£&nbsp;&nbsp;Ö¹&nbsp;"  onclick="stopPlay();" id="stop_button">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="&nbsp;ï¿½ï¿½&nbsp;&nbsp;ï¿½ï¿½&nbsp;"  onclick="noSound();" id="no_sound">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="&nbsp;ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½&nbsp;"  onclick="soundChange(-10);">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="&nbsp;ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½&nbsp;"  onclick="soundChange(10);">&nbsp;&nbsp;&nbsp;&nbsp;					
-					<input type="submit" value="&nbsp;×¥&nbsp;&nbsp;ï¿½ï¿½&nbsp;" name="capture">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="submit" value="&nbsp;Â¼&nbsp;&nbsp;ï¿½ï¿½&nbsp;" name="record">&nbsp;&nbsp;
-					<input type="submit" value="&nbsp;ï¿½ï¿½&nbsp;&nbsp;ï¿½ï¿½&nbsp;" name="reboot">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="submit" value="&nbsp;ï¿½ï¿½ï¿½ï¿½ï¿½&nbsp;" name="Alarm">&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="&nbsp;È«&nbsp;&nbsp;ï¿½ï¿½&nbsp;"  onclick="screenFull()">&nbsp;&nbsp;&nbsp;&nbsp;
-					<font color="red" size="2">ï¿½ï¿½ï¿½ï¿½ï¿½</font><input type="text" id="vlc_sound" style="width: 40px;color: blue">
+					<input type="button" value="&nbsp;¾²&nbsp;&nbsp;Òô&nbsp;"  onclick="noSound();" id="no_sound">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;¼õÉÙÒôÁ¿&nbsp;"  onclick="soundChange(-10);">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;Ôö´óÒôÁ¿&nbsp;"  onclick="soundChange(10);">&nbsp;&nbsp;&nbsp;&nbsp;					
+					<input type="submit" value="&nbsp;×¥&nbsp;&nbsp;ÅÄ&nbsp;" name="capture">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="&nbsp;Â¼&nbsp;&nbsp;Ïñ&nbsp;" name="record">&nbsp;&nbsp;
+					<input type="submit" value="&nbsp;ÖØ&nbsp;&nbsp;Æô&nbsp;" name="reboot">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="&nbsp;Æô¶¯±¨¾¯&nbsp;" name="Alarm">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="&nbsp;È«&nbsp;&nbsp;ÆÁ&nbsp;"  onclick="screenFull()">&nbsp;&nbsp;&nbsp;&nbsp;
+					<font color="red" size="2">ÒôÁ¿£º</font><input type="text" id="vlc_sound" style="width: 40px;color: blue">
 				</form>
 			</div>  
 		</div> 
 		<div id="left_bottom" class="layout_bottom">
 		<tr>
 			<br>
-			<td align="center"><center>ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð£ï¿½Î¥ï¿½ß±Ø¾ï¿½</center></td>
+			<td align="center"><center>°æÈ¨ËùÓÐ£¬Î¥Õß±Ø¾¿</center></td>
 			<hr size="6" width="30%" align="center"  noshade  color=red >
 		</tr>
 		</div>
