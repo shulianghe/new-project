@@ -28,12 +28,15 @@ echo "device ip is $deviceIP"
 
 rm tmp.txt
 
+#创建设备列表
 sqlite3 device.db "create table devicelist(deviceName text,deviceIP VARCHAR(100))"
 
+#获取数据库中已经存在的设备信息
 sqlite3 device.db "select * from devicelist" > existIP.txt
 existIP=`grep -Eo '([0-9]{3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})' existIP.txt`
 rm existIP.txt
 
+#将已经存在的设备信息与新扫描到的设备IP比较，若已存在则不添加
 name=camera
 i=1
 #for ip in $deviceIP
