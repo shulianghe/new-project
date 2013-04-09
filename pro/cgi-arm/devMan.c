@@ -62,7 +62,8 @@ int create_objects(FILE *fp,char *name,char *ip)
 	
 		
 	fprintf(fp,"%s",out);
-	cJSON_Delete(root);	printf("%s\n",out);	free(out);
+	cJSON_Delete(root);		
+	free(out);
 	fclose(fp);
 	
 	return 0;
@@ -84,7 +85,7 @@ int addToFile(char *filename,char *name,char *ip)
 	{
 		if(NULL == cJSON_GetErrorPtr())
 		{
-			printf("FILE NOT EXIST\n");
+	//		printf("FILE NOT EXIST\n");
 			if(!create_objects(fp,name,ip))
 				return 0;
 			return 1;
@@ -93,21 +94,28 @@ int addToFile(char *filename,char *name,char *ip)
 		return 1;
 	}
 	else
-	{/*
-		//检查IP是否已经存在
+	{
+		//检查IP是否已经存在,防止重复添加
 		s1 = json->child;
 		while(s1){
 			//i++;
-			printf("device's Name is %s\n",cJSON_GetObjectItem(s1,"deviceName")->valuestring);
-			printf("device's IP is %s\n",cJSON_GetObjectItem(s1,"IP")->valuestring);
+			//printf("device's Name is %s\n",cJSON_GetObjectItem(s1,"deviceName")->valuestring);
+			//printf("device's IP is %s\n",cJSON_GetObjectItem(s1,"IP")->valuestring);
 			
-			if(!strcmp(cJSON_GetObjectItem(s1,"deviceName")->valuestring,name) | !strcmp(cJSON_GetObjectItem(s1,"IP")->valuestring,ip))
+			//if(!strcmp(cJSON_GetObjectItem(s1,"deviceName")->valuestring,name) | !strcmp(cJSON_GetObjectItem(s1,"IP")->valuestring,ip))
+			if(!strcmp(cJSON_GetObjectItem(s1,"IP")->valuestring,ip))
 			{
-				printf("This(name=%s,IP=%s) device already exist,name or ip repeated.Please check and retry.",cJSON_GetObjectItem(s1,"deviceName")->valuestring,cJSON_GetObjectItem(s1,"IP")->valuestring);
+				printf("This(name=%s,IP=%s) device already exist,device ip repeated.Please check and retry.",cJSON_GetObjectItem(s1,"deviceName")->valuestring,cJSON_GetObjectItem(s1,"IP")->valuestring);
+				out=cJSON_Print(json);
+				cJSON_Delete(json);
+				fprintf(fp,"%s",out);
+			
+			free(out);
+			fclose(fp);
 				return 1;
 			}
 			s1 = s1->next;
-		}*/
+		}
 		cJSON_AddItemToArray(json,devs=cJSON_CreateObject());
 		cJSON_AddStringToObject(devs, "deviceName", dev.deviceName);
 		cJSON_AddStringToObject(devs, "IP", dev.IP);
@@ -154,10 +162,11 @@ int delItem(char *filename,char *name,char *ip)
 		if(i==cJSON_GetArraySize(json))
 		{
 			printf("IP(%s) you want delete is not exist,Please check and retry...\n",ip);
+			
 			out=cJSON_Print(json);
 			cJSON_Delete(json);
-			//printf("in del out = %s\n",out);
 			fprintf(fp,"%s",out);
+			
 			free(out);
 			fclose(fp);
 			return 1;
@@ -199,13 +208,15 @@ int cgiMain()
 	char name[20]="";
 	char IP[20]="";
 	cgiHeaderContentType("Text/html");
-	if(cgiFormString("name",name,sizeof(name)) == cgiFormSuccess)
+	if(cgiFormString("name",name,sizeof(name)) == !cgiFormSuccess)
 	{
-		printf("name = %s\n",name);
+		printf("Get device name error!\n");
+		return 1;
 	}
-	if(cgiFormString("ip",IP,sizeof(IP)) == cgiFormSuccess)
+	if(cgiFormString("ip",IP,sizeof(IP)) == !cgiFormSuccess)
 	{
-		printf("ip = %s\n",IP);
+		printf("Get device IP error\n");
+		return 1;
 	}
 	if(checkIP(IP)>0){
 		if(cgiFormSubmitClicked("add") == cgiFormSuccess)
