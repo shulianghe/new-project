@@ -42,6 +42,30 @@ i=1
 #	((i++))
 #	echo $ip
 #done
+
+#删除未扫描到的设备信息
+flag=0
+for oldIP in $existIP
+do
+	flag=0
+	for newIP in $deviceIP
+	do
+		if [ "$oldIP"x == "$newIP"x ]; then
+            flag=1
+			break
+		fi
+	done
+	if [ $flag -eq 0 ];then
+#		echo "'IP '$oldIP' not exist"
+        sqlite3 device.db "delete from devicelist where deviceIP='$oldIP'"
+    fi 
+done
+
+sqlite3 device.db "select * from devicelist" > existIP.txt
+existIP=`grep -Eo '([0-9]{3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})' existIP.txt`
+rm existIP.txt
+
+#添加扫描到而数据库中没有的设备信息
 flag=0
 for newIP in $deviceIP
 do
