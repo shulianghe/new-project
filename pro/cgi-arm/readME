@@ -1,0 +1,1 @@
+编译海康CGI包含录像功能一定要链接libSystemTransform.so,否则录像大小为0
