@@ -7,23 +7,22 @@
 #!/bin/bash
 #nmap.sh:嗅探局域网内活跃ip并将他们写入iplist.txt
 
-#判断wifi热点是否开启，若开启则扫描，否则不扫描
+#判断wifi热点是否开启，若开启则以br0扫描，否则eth0扫描,wifi热点优先
 CONFIG_FILE=/opt/homewell/nwcfg/minidb.xml
 
 WIFI_MODE=`cat $CONFIG_FILE |sed -n '/<Wifi>/,/<\/Wifi>/p' |grep "<Mode>" |sed 's/^.*<Mode>//' |sed 's/<\/Mode>.*$//'`
 if [ $? != "0" ];then exit 1;fi
 #test $WIFI_MODE != wifiAPMode && exit 0
-if [ "$WIFI_MODE"x == "wifiAPMode"x ]
+if [ "$WIFI_MODE"x = "wifiAPMode"x ]
 then
 	ip=`ifconfig br0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
 else
 	ip=`ifconfig eth0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
 fi
-	
 
 #按语言得不同选择
 #ip=`ifconfig eth0 |grep 'inet 地址'|awk -F '  *|:' '{print $4}'`
-#ip=`ifconfig br0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
+#ip=`ifconfig eth0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
 #echo "Host ip = $ip"
 
 #nmap -sP "$ip"/24 >tmp.txt
@@ -37,13 +36,14 @@ grep -B 3 open tmp.txt >iplist.txt
 deviceIP=`grep -Eo '([0-9]{3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})' iplist.txt`
 #deviceMACAdd=`grep 'MAC Address' iplist.txt | awk '{print $3}'`
 
-echo "device ip is $deviceIP"
+#echo "device ip is $deviceIP"
 #echo;echo "device MAC address is $deviceMACAdd"
 
 rm tmp.txt
 
+#dir=`pwd`
 dir=/opt/homewell/vwlite
-echo $dir
+#echo $dir
 
 sqlite3 $dir/device.db "create table devicelist(deviceName text,deviceIP VARCHAR(100),proxyState integer DEFAULT 0,clientNum integer DEFAULT 0, rtspUrl text DEFAULT NULL)"
 
@@ -68,17 +68,17 @@ do
 	for newIP in $deviceIP
 	do
 		if [ "$oldIP"x == "$newIP"x ]; then
-			sqlite3 $dir/device.db "update devicelist set proxyState=0,rtspUrl='' where deviceIP='$oldIP'" 
+#			sqlite3 $dir/device.db "update devicelist set proxyState=0,rtspUrl='' where deviceIP='$oldIP'" 
 			flag=1
 			break
 		fi
 	done
 	if [ $flag -eq 0 ];then
-		echo "ip '$oldIP' not exist"
+#		echo "ip '$oldIP' not exist"
 		sqlite3 $dir/device.db "delete from devicelist where deviceIP='$oldIP'"
     	fi 
 done
-sqlite3 $dir/device.db "select * from devicelist"
+#sqlite3 $dir/device.db "select * from devicelist"
 
 sqlite3 $dir/device.db "select * from devicelist" > existIP.txt
 existIP=`grep -Eo '([0-9]{3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})' existIP.txt`
@@ -92,7 +92,7 @@ do
 	for oldIP in $existIP
 	do
 		if [ "$newIP"x = "$oldIP"x ]; then
-			echo "IP '$newIP' already exist"
+#			echo "IP '$newIP' already exist"
 			((i++))
             		flag=1
 			break
@@ -107,5 +107,5 @@ do
 #	echo $newIP 
 done
 
-sqlite3 $dir/device.db "select * from devicelist"                  
+#sqlite3 $dir/device.db "select * from devicelist"                  
 
