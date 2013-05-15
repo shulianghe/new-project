@@ -7,22 +7,9 @@
 #!/bin/bash
 #nmap.sh:嗅探局域网内活跃ip并将他们写入iplist.txt
 
-#判断wifi热点是否开启，若开启则以br0扫描，否则eth0扫描,wifi热点优先
-CONFIG_FILE=/opt/homewell/nwcfg/minidb.xml
-
-WIFI_MODE=`cat $CONFIG_FILE |sed -n '/<Wifi>/,/<\/Wifi>/p' |grep "<Mode>" |sed 's/^.*<Mode>//' |sed 's/<\/Mode>.*$//'`
-if [ $? != "0" ];then exit 1;fi
-#test $WIFI_MODE != wifiAPMode && exit 0
-if [ "$WIFI_MODE"x = "wifiAPMode"x ]
-then
-	ip=`ifconfig br0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
-else
-	ip=`ifconfig eth0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
-fi
-
 #按语言得不同选择
 #ip=`ifconfig eth0 |grep 'inet 地址'|awk -F '  *|:' '{print $4}'`
-#ip=`ifconfig eth0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
+ip=`ifconfig eth0 |grep 'inet addr'|awk -F '  *|:' '{print $4}'`
 #echo "Host ip = $ip"
 
 #nmap -sP "$ip"/24 >tmp.txt
@@ -91,7 +78,7 @@ do
 	flag=0
 	for oldIP in $existIP
 	do
-		if [ "$newIP"x = "$oldIP"x ]; then
+		if [ "$newIP"x == "$oldIP"x ]; then
 #			echo "IP '$newIP' already exist"
 			((i++))
             		flag=1
